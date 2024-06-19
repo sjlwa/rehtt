@@ -1,4 +1,6 @@
+from os import path
 from pathlib import Path
+from typing import Iterator
 
 
 """Reads a .http file"""
@@ -22,3 +24,28 @@ class HttpFileReader:
            self.content = file.read()
 
         return self.content
+
+
+
+class DirectoryScanner:
+
+    @staticmethod
+    def scan(dirname: str) -> Iterator:
+        path = Path(dirname)
+        if not path.exists():
+            raise IsADirectoryError('Directory does not exists')
+
+        if not Path.is_dir(path):
+            raise IsADirectoryError('{} is not a directory'.format(dirname))
+
+        return Path.iterdir(path)
+
+
+    @staticmethod
+    def filter_http(item: Path):
+        return item.is_dir() or (item.is_file() and item.suffix == '.http')
+
+
+    @staticmethod
+    def filter(iterdir: Iterator):
+        return list(filter(DirectoryScanner.filter_http, iterdir))
