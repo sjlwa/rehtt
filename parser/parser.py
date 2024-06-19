@@ -3,6 +3,7 @@ from re import sub as replace_substring
 from typing import Dict, List, Tuple
 from reader import HttpFileReader
 from parser.progs import Progs
+from parser.request import RequestParser
 
 
 """Parse a file containing the directives for http requests"""
@@ -54,6 +55,7 @@ class HttpFileParser:
         content = self.file_reader.read()
         self.entries_pos = [entry.span() for entry in Progs.METHODS.finditer(content)]
         self.split_entries()
+        RequestParser.parse_entries(self.entries)
 
 
     """Split the contents as its individual requests"""

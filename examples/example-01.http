@@ -2,15 +2,23 @@
 @port=8000
 @base={{hostname}}:{{port}}
 
-GET {{base}}
+GET {{base}} HTTP/1.1
 
-POST {{hostname}}:8000
-Content-Type
+GET {{base}}/books
+
+
+POST {{hostname}}:8000/books
+Content-Type: application/json
+Authentication: 190231239u
 
 {
-    "name": "Ivan"
+    "title": "Das parfum",
+    "description": "Patrick Süskinds erster Roman",
+    "cover_art_image": "arch8oas.jpeg"
 }
 
-PUT http://127.0.0.1:{{port}}
 
-DELETE http://127.0.0.1:8000
+PUT http://127.0.0.1:{{port}}/books/1
+Content-Type: application/json
+
+DELETE http://127.0.0.1:8000/books/1
