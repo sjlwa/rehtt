@@ -5,7 +5,7 @@ from pathlib import Path
 class HttpFileReader:
 
     filepath: Path
-    content: str
+    content: str = ""
 
     def __init__(self, filepath: str) -> None:
         path = Path(filepath)
@@ -17,6 +17,8 @@ class HttpFileReader:
 
 
     def read(self):
-        file = open(self.filepath, 'r')
-        self.content = file.read()
+        if self.content == "":
+           file = open(self.filepath, 'r')
+           self.content = file.read()
+
         return self.content
