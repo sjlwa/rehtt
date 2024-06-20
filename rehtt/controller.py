@@ -1,8 +1,5 @@
-import curses
-from pathlib import Path
-from components.items import ItemsList
-from components.component import Component
-from events import Event
+from .components.component import Component
+from .events import Event
 
 class Controller:
     """Manages the components on a screen and its events"""

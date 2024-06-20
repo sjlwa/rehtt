@@ -1,8 +1,7 @@
-from controller import Controller
 import curses
-
-from components.items import ItemsList
-from events import Event
+from .controller import Controller
+from .components.items import ItemsList
+from .events import Event
 
 
 class Screen:

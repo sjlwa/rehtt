@@ -1,8 +1,8 @@
 import curses
 from pathlib import Path
 from typing import List
-from components.component import Component
-from reader import DirectoryScanner, HttpFileReader
+from .component import Component
+from ..reader import DirectoryScanner, HttpFileReader
 
 
 class ItemsList(Component):

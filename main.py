@@ -1,9 +1,9 @@
-from urllib import request
-from urllib.request import urlopen
-from parser.parser import HttpFileParser
-from parser.request import RequestParser
-from controller import Controller
-from screen import Screen
+# from urllib import request
+# from urllib.request import urlopen
+# from rehtt.parser.parser import HttpFileParser
+# from rehtt.parser.request import RequestParser
+from rehtt.controller import Controller
+from rehtt.screen import Screen
 
 try:
 
