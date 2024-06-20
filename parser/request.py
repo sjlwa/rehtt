@@ -11,9 +11,9 @@ class RequestParser:
             entries[i] = RequestParser.parse(request_data)
 
 
-    """Parse the contents of an entry as a tuple, containing the request data"""
     @staticmethod
     def parse(request_data: str) -> Tuple :
+        """Parse the contents of an entry as a tuple, containing the request data"""
 
         parts = request_data.split('\n', 1)
         first_line = parts[0].split(' ')
@@ -42,8 +42,8 @@ class RequestParser:
 
 
 
-    """Build a request object from the contents of its entry"""
     @staticmethod
     def build(entry: Tuple):
+        """Build a request object from the contents of its entry"""
         url, method, headers, data = entry
         return Request(url, method=method, headers=headers, data=data)

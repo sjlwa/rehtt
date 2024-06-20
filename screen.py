@@ -2,21 +2,21 @@ import curses
 
 class Screen:
 
-    """Initialize the screen"""
-    def __init__(self) -> None:
+    def __init__(self, controller) -> None:
+        """Initialize the screen"""
         self.stdscr = curses.initscr()
         curses.noecho()
         curses.cbreak()
         self.stdscr.keypad(True)
 
 
-    """Starts the rendering"""
     def start(self):
+        """Starts the rendering"""
         curses.wrapper(self.loop)
 
 
-    """Revert configutation changes"""
     def close(self) -> None:
+        """Revert configutation changes"""
         if self.stdscr:
             curses.echo()
             curses.nocbreak()
@@ -24,8 +24,9 @@ class Screen:
             curses.endwin()
 
 
-    """Renders the screen indefinitly"""
     def loop(self, stdscr):
+        """Handles render loop"""
+
         self.stdscr = stdscr
         self.stdscr.clear()
         self.stdscr.addstr(0, 0, "Press 'q' to exit")

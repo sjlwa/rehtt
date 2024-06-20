@@ -3,8 +3,8 @@ from pathlib import Path
 from typing import Iterator
 
 
-"""Reads a .http file"""
 class HttpFileReader:
+    """Reads a .http file"""
 
     filepath: Path
     content: str = ""

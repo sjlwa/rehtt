@@ -6,8 +6,8 @@ from parser.progs import Progs
 from parser.request import RequestParser
 
 
-"""Parse a file containing the directives for http requests"""
 class HttpFileParser:
+    """Parse a file containing the directives for http requests"""
 
     file_reader: HttpFileReader
     entries_pos: List
@@ -26,16 +26,18 @@ class HttpFileParser:
         return (name, value)
 
 
-    """Find the defined variables and save them as a dictionary"""
     def parse_variables(self):
+        """Find the defined variables and save them as a dictionary"""
+
         content = self.file_reader.read()
         for var in Progs.VARS_DEFINITION.finditer(content):
             name, value = self.extract_variable(var)
             self.variables[name] = value
 
 
-    """Replace occurrences of variables in the contents with the real value"""
     def replace_variables(self):
+        """Replace occurrences of variables in the contents with the real value"""
+
         while True:
             content = self.file_reader.read()
 
@@ -50,16 +52,18 @@ class HttpFileParser:
             self.file_reader.content = updated_content
 
 
-    """Convert the contents into a manageable object format"""
     def parse_entries(self):
+        """Convert the contents into a manageable object format"""
+
         content = self.file_reader.read()
         self.entries_pos = [entry.span() for entry in Progs.METHODS.finditer(content)]
         self.split_entries()
         RequestParser.parse_entries(self.entries)
 
 
-    """Split the contents as its individual requests"""
     def split_entries(self):
+        """Split the contents as its individual requests"""
+
         length = len(self.entries_pos)
         for i in range(0, length):
             pos = self.entries_pos[i]
