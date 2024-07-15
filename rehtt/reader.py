@@ -30,13 +30,13 @@ class HttpFileReader:
 class DirectoryScanner:
 
     @staticmethod
-    def scan(dirname: str) -> Iterator:
-        path = Path(dirname)
+    def scan(path: Path) -> Iterator:
+
         if not path.exists():
             raise IsADirectoryError('Directory does not exists')
 
         if not Path.is_dir(path):
-            raise IsADirectoryError('{} is not a directory'.format(dirname))
+            raise IsADirectoryError('{} is not a directory'.format(path))
 
         return Path.iterdir(path)
 

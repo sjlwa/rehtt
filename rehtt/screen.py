@@ -13,6 +13,7 @@ class Screen:
         self.stdscr = curses.initscr()
         curses.noecho()
         curses.cbreak()
+        curses.curs_set(0)
         self.stdscr.keypad(True)
 
         self.controller = controller
@@ -41,9 +42,6 @@ class Screen:
     def loop(self, screen):
         """Handles render loop"""
         screen.clear()
-
-        self.controller.render_components()
-
         while True:
             rows, cols = screen.getmaxyx()
             screen.addstr(0, cols - len(str(cols)), str(cols))
@@ -54,4 +52,4 @@ class Screen:
             if event == Event.QUIT:
                 break
 
-            screen.refresh()
+            screen.clear()

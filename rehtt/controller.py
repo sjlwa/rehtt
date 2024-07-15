@@ -20,24 +20,25 @@ class Controller:
         self.components.append(component)
 
 
-    def render_components(self, callback=None):
+    def render_components(self):
         for component in self.components:
-            if callback is not None:
-                callback(component)
-
             component.render()
 
 
+    def handle_components_input(self, ch):
+        for component in self.components:
+            component.handle_input(ch)
+
+
     def handle(self) -> Event:
+
+        self.render_components()
 
         ch = self.stdscr.getch()
         if ch == ord('q'):
             return Event.QUIT
 
-        def handle_component_input(component):
-            component.handle_input(ch)
-
-        self.render_components(handle_component_input)
+        self.handle_components_input(ch)
 
         return Event.NONE
 
