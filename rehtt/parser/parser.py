@@ -1,9 +1,10 @@
+from pathlib import Path
 from re import split
 from re import sub as replace_substring
 from typing import Dict, List, Tuple
-from reader import HttpFileReader
-from parser.progs import Progs
-from parser.request import RequestParser
+from rehtt.reader import HttpFileReader
+from rehtt.parser.progs import Progs
+from rehtt.parser.request import RequestParser
 
 
 class HttpFileParser:
@@ -63,6 +64,8 @@ class HttpFileParser:
 
     def split_entries(self):
         """Split the contents as its individual requests"""
+
+        self.entries = []
 
         length = len(self.entries_pos)
         for i in range(0, length):

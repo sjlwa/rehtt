@@ -2,13 +2,18 @@ from typing import Tuple
 from urllib.request import Request
 import json
 
+from rehtt.components.item import Item
+from ..log import logtty
 
 class RequestParser:
 
     @staticmethod
     def parse_entries(entries):
         for i, request_data in enumerate(entries):
-            entries[i] = RequestParser.parse(request_data)
+            if isinstance(request_data, Item):
+                entries[i] = RequestParser.parse(str(request_data.value))
+            else:
+                entries[i] = RequestParser.parse(request_data)
 
 
     @staticmethod
@@ -47,3 +52,9 @@ class RequestParser:
         """Build a request object from the contents of its entry"""
         url, method, headers, data = entry
         return Request(url, method=method, headers=headers, data=data)
+
+
+    @staticmethod
+    def build_all(entries):
+        for i, entry in enumerate(entries):
+            entries[i] = Item(RequestParser.build(entry))

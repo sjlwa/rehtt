@@ -1,9 +1,13 @@
 import curses
-from os import sep
+from os import sep, write
 from pathlib import Path
 from typing import List
+
+from .item import Item
+from rehtt.parser.request import RequestParser
+from rehtt.parser.parser import HttpFileParser
 from .component import Component
-from ..reader import DirectoryScanner, HttpFileReader
+from rehtt.reader import DirectoryScanner, HttpFileReader
 
 
 class ItemsList(Component):
@@ -11,7 +15,16 @@ class ItemsList(Component):
 
     current: int = 0
     dir: Path
-    items: List[Path]
+    items: List[Item]
+
+
+    def print_items(self):
+        print('====== items list ======')
+        print("current: ", self.current, " dir: ", self.dir)
+        for item in self.items:
+            print(item.value)
+        print()
+
 
     def __init__(self) -> None:
         super().__init__()
@@ -20,9 +33,19 @@ class ItemsList(Component):
 
 
     def update_items(self):
-        """Refresh the items by scanning the current directory"""
-        self.items = DirectoryScanner.filter(DirectoryScanner.scan(self.dir))
-        self.items.insert(0, Path('..'))
+        """Refresh the items by scanning the current directory or file"""
+
+        if self.dir.is_file():
+            file_reader = HttpFileReader(str(self.dir))
+            file_parser = HttpFileParser(file_reader)
+            file_parser.parse_variables()
+            file_parser.replace_variables()
+            file_parser.parse_entries()
+            RequestParser.build_all(file_parser.entries)
+            self.items = file_parser.entries
+        else:
+            self.items = DirectoryScanner.filter(DirectoryScanner.scan(self.dir))
+            self.items.insert(0, Item(Path('..')))
 
 
     def back_from_item(self):
@@ -31,13 +54,17 @@ class ItemsList(Component):
         self.update_items()
 
 
-    def select_item(self):
+    def select_item(self, current=None):
+        if current:
+            self.current = current
+
         selected = self.items[self.current]
 
-        if selected == '..':
-            self.dir = self.dir.parent
-        else:
-            self.dir = Path.joinpath(self.dir, selected)
+        if isinstance(selected.value, Path):
+            if str(selected.value) == '..':
+                self.dir = self.dir.parent
+            else:
+                self.dir = Path.joinpath(self.dir, selected.value)
 
         self.current = 0
         self.update_items()
@@ -69,12 +96,9 @@ class ItemsList(Component):
         max_y, max_x = self.stdscr.getmaxyx()
 
         for i, item in enumerate(self.items):
-            item: Path
+            item: Item
 
             if i >= max_y - 2:
                 break
 
-            if i == self.current:
-                self.stdscr.addstr(i, 0, str(item.name), curses.A_REVERSE)
-            else:
-                self.stdscr.addstr(i, 0, str(item.name))
+            item.render(self.stdscr, i, i == self.current)

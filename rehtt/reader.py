@@ -2,6 +2,8 @@ from os import path
 from pathlib import Path
 from typing import Iterator
 
+from rehtt.components.item import Item
+
 
 class HttpFileReader:
     """Reads a .http file"""
@@ -22,6 +24,7 @@ class HttpFileReader:
         if self.content == "":
            file = open(self.filepath, 'r')
            self.content = file.read()
+           file.close()
 
         return self.content
 
@@ -48,4 +51,4 @@ class DirectoryScanner:
 
     @staticmethod
     def filter(iterdir: Iterator):
-        return list(filter(DirectoryScanner.filter_http, iterdir))
+        return [Item(x) for x in list(filter(DirectoryScanner.filter_http, iterdir))]

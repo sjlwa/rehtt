@@ -16,6 +16,12 @@ class Screen:
         curses.curs_set(0)
         self.stdscr.keypad(True)
 
+        curses.start_color()
+        curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
+        curses.init_pair(2, curses.COLOR_CYAN, curses.COLOR_BLACK)
+        curses.init_pair(3, curses.COLOR_BLUE, curses.COLOR_BLACK)
+        curses.init_pair(4, curses.COLOR_RED, curses.COLOR_BLACK)
+
         self.controller = controller
         self.init_components()
         self.controller.set_stdscr(self.stdscr)
@@ -37,6 +43,7 @@ class Screen:
             curses.nocbreak()
             self.stdscr.keypad(False)
             curses.endwin()
+            curses.curs_set(1)
 
 
     def loop(self, screen):
